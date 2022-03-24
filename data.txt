@@ -1,4 +1,3 @@
-
-Mitsubishi,15290,Jude 
-Nissan,15955,Henriette
-Hyundai,16400,Erica
+McLarenSenna,15290,Jude,1 
+JeepGladiator,15955,Henriette ,2
+AcuraLegend,16400,Erica ,1
