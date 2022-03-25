@@ -1,3 +1,1 @@
-Dodge Stealth ,1595,steve,2,0
-Acura Legend  ,1530,sam,3,0
-McLaren Senna ,1640,tri,1,0
+Dodge Stealth,1595,steve,2,0

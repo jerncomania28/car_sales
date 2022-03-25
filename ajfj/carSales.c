@@ -35,14 +35,18 @@ char customerNames[MAX_SALES][201];
 unsigned short quantityOrdered[MAX_SALES];
 
 char carModelsAvailable[10][50] = {
-    "Jeep Gladiator", "Dodge Stealth", "McLaren Senna", "Acura Legend", "Lancia Stratos"};
+    "Jeep Gladiator", "Dodge Stealth ", "McLaren Senna ", "Acura Legend  ", "Lancia Stratos"};
 unsigned short carModelsQuantityAvailable[5] = {1, 3, 2, 3, 1};
 
 float carModelPricesPerSale[5] = {152.9f, 1595.5f, 1640.0f, 1530.3f, 2613.5f};
 
-int numberOfSales = 0;
+unsigned short numberOfSales = 0;
 
 unsigned short totalNumberOfCarsAvailable;
+
+char *_message = "Please enter a Choice : ";
+
+bool data_changed = false;
 
 //  file codes
 
@@ -81,34 +85,68 @@ void pauseProgram(char userChoice)
     getchar();
 }
 
-char getCharFromConsole(char message[201])
+char getCharFromConsole(char message[201], char *altMessage)
 {
+ 
+ 	char userInput;
+ 		bool b = false;
+	while(true){
 
-    char userInput;
 
-    printf(message);
+    printf((b) ? altMessage : message);
 
     scanf("\n %c", &userInput);
+    if(isalpha(userInput)){
+    	break;
+	}
+	else{
+		b = true;
+	}
     
-
-    return userInput;
+	}
+    return tolower(userInput);
 }
+
+/* A function to check if a string is fully a number
+*/
+
+bool checker(char* str){
+	int length = sizeof(str) / sizeof(char);
+		
+		for(int i = 0; i<length; i++){
+			if(isdigit(str[i])){
+				return false;
+			}
+		}
+	return true;
+	}
+
 
 unsigned short getUnsignedShortFromConsole(char message[301])
 {
     unsigned short userInput;
-
     printf(message);
     scanf("%hd", &userInput);
-
     return userInput;
 }
 
-void getStringFromConsole(char message[201], char *str)
+void getStringFromConsole(char message[201], char *str, char *altMessage)
 {
-    printf(message);
+	bool b = false;
+	while(true){
 
+
+    char *f_message = ((b) ? altMessage : message);
+    printf("%s",f_message);
+	
     scanf("\n%[^\n]s", str);
+    if(!checker(str)){
+    	b = true;
+	}
+    else{
+    	break;
+	}
+}
 }
 
 // FILE FUNCTIONS
@@ -171,7 +209,6 @@ void closeFile()
 int find(char* str){
 	if((sizeof(str) / sizeof(char)) <1)
 	return -1;
-//	printf("finder method called with %s",str);
 	for(int i=0; i<(sizeof(carModelsAvailable) / sizeof(char*)); i++){
 		if(strcmp(carModelsAvailable[i],str) == 0){
 			return i;
@@ -187,20 +224,21 @@ void readDataFromFile()
     //counts the quantity
     int quantity=0;
 
-    while (true)
+    while (1)
     {
-        unsigned short carPrice, quantityOrder,discount;
+        unsigned short quantityOrder;
+        float discount,carPrice;
         char nameOfCar[201] = "", customerName[201] = "";
 
-       int fileData = fscanf(file, "%[^,],%hu,%[^,],%hu,%hu\n", &nameOfCar, &carPrice, &customerName, &quantityOrder,&discount);
-    
-	
+        int fileData = fscanf(file, "%[^,],%hu,%[^,],%hu,%hu\n", &nameOfCar, &carPrice, &customerName, &quantityOrder,&discount);
+        
+		
         // break if EOF(end of file ) reached.
         if (fileData == EOF)
         {
             break;
         }
-		printf("%s %d %s %d %d\n",nameOfCar,carPrice,customerName,quantityOrder,discount);
+		
         carPrices[counter] = carPrice;
         quantityOrdered[counter] = quantityOrder;
         discounts[counter] = discount;
@@ -212,18 +250,20 @@ void readDataFromFile()
         //update the quantity of cars available with the 
         //data gotten from the file
         int position = find(nameOfCar);
-       // printf(" position%d", position);
+        if(position>-1)
         carModelsQuantityAvailable[position] -= quantityOrder;
      
         
 
         counter++;
     }
+    printf("%d cars sold", counter-1);
 
     numberOfSales = counter;
 }
 
 void getDataFromFile()
+
 {
     openFile(CSV_FILE, "r");
 
@@ -251,16 +291,16 @@ void getDataFromFile()
 //     return str;
 // }
 
-void writeDataToFile()
-{
 
-	
+//Writing to file in the order 
+// carModel, carPrice, customerName,quantity ordered and discount
+void writeDataToFile()
+{  
+
+	printf("%d number of sales", numberOfSales);
     for (int i = 0; i < numberOfSales; i++)
-    { 
-	if((sizeof(carModels[i]) / sizeof(char*)) <1 || carPrices[i] == 0){
-		break;
-	}
-	 char line[201];
+    {
+        char line[201];
 
         char data[50];
 
@@ -268,7 +308,7 @@ void writeDataToFile()
 
         strcat(line, ",");
 
-        sprintf(data, "%d", (int)carPrices[i]);
+        sprintf(data, "%f",carPrices[i]);
 
         // itoa((int)carPrices[i],data,10);
 
@@ -277,39 +317,47 @@ void writeDataToFile()
         strcat(line, ",");
 
         strcat(line, customerNames[i]);
+
         strcat(line, ",");
 
-        sprintf(data, "%d", (int)quantityOrdered[i]);
+        sprintf(data, "%d", quantityOrdered[i]);
 
         // itoa( (int)quantityOrdered[i],data,10);
 
         strcat(line, data);
-        strcat(line, ",");
-        
- 		sprintf(data, "%d", discounts[i] * 100);
+          strcat(line, ",");
+
+        sprintf(data, "%f", discounts[i]);
+
+        // itoa( (int)quantityOrdered[i],data,10);
 
         strcat(line, data);
-        
+
        // strcpy(line, "\n\n testing written files");
 
         fprintf(file, line);
+
 
         if (i < numberOfSales - 1)
         {
             fprintf(file, "\n");
         }
     }
-    
+//    fprintf(file, "\n");
+//    closeFile();
+
 }
 
 void saveDataToFile()
 {
+	if(data_changed){
     openFile(CSV_FILE, "w");
 
     if (fileStatus == FILE_OPENED)
     {
         printf("\n\n can see save to Data function");
         writeDataToFile();
+        data_changed = false;
     }
     else if (fileStatus == FILE_ERROR)
     {
@@ -319,6 +367,8 @@ void saveDataToFile()
     }
 
     closeFile();
+    	}
+
 }
 
 // end of file functions.
@@ -461,13 +511,14 @@ void printDiscountOutcome(bool giveDiscount)
 void menu_buyCar()
 {
 
-    
+
 
     unsigned short numberOfCarsNeeded = 0, userAge = 0, carChoosen;
     bool giveDiscount = FALSE;
+    char *name ;
     float totalPrice = 0;
 
-    getStringFromConsole("What is your name ? Name :", customerNames[numberOfSales]);
+    getStringFromConsole("What is your name ? Name :", customerNames[numberOfSales],"Please enter a valid name without NUMBER : ");
 	menu_showAllCars();
     carChoosen = getUnsignedShortFromConsole("select the type of Car you want from the Displayed Table Above ? ");
 
@@ -501,7 +552,7 @@ void menu_buyCar()
 			}
 			
             printDiscountOutcome(giveDiscount);
-            carPrices[numberOfSales] = carModelPricesPerSale[carChoosen];
+            carPrices[numberOfSales]= carModelPricesPerSale[carChoosen];
 
             carModelsQuantityAvailable[carChoosen] = carModelsQuantityAvailable[carChoosen] - numberOfCarsNeeded;
 
@@ -524,7 +575,8 @@ void menu_buyCar()
         printf("Sorry ,The selected Number isn't listed in The Display. \n\n");
     }
 
-   
+    
+    data_changed = true;
 }
 
 void menu_exit()
@@ -547,6 +599,7 @@ void printSalesDataAtPosition(int position)
            carPrices[position], quantityOrdered[position],
            customerNames[position]);
 }
+
 //Counts the number of cars available for sale
 
 void countAvailableCars(){
@@ -556,6 +609,8 @@ void countAvailableCars(){
 	 	totalNumberOfCarsAvailable += carModelsQuantityAvailable[i];
 	 }
 }
+
+
 void view_sales()
 {
 
@@ -566,26 +621,26 @@ void view_sales()
 
     printf("\nAll sales Data : \n\n");
 
-    printf("%d number of cars sold" , numberOfSales);
+    printf("%d number of cars  sold" , --numberOfSales);
 
     for (int i = 0; i < numberOfSales; i++)
     {
 
-        float price = carPrices[i] * quantityOrdered[i];
+       float price = carPrices[i] * quantityOrdered[i];
 //        if(price == 0.0){
 //        	continue;
 //		}   
 		
 	
-	//	char *formatted_discount = (discounts[i] == 0.0) ? "No" : gcvt(discounts[i],5,formatted_discount);
+		//char *formatted_discount = (discounts[i] == 0.0) ? "No" : "";
 		
         // printSalesDataAtPosition(i);
-		printf("\n\n%s car model, sold for %f GBP at %f GBP per one for %hd quantity with %.2f discount to %s ",carModels[i], price,carPrices[i],  quantityOrdered[i],discounts[i],customerNames[i]);
+		printf("\n %s car model, sold for %f GBP at %f GBP per one for %hd quantity with %.2f Discount to %s ",carModels[i], price,carPrices[i],  quantityOrdered[i],discounts[i],customerNames[i]);
         totalSalesValue += price;
         numberOfcarSold += quantityOrdered[i];
     }
 
-    totalNumberOfCarsAvailable -= numberOfcarSold;
+   // totalNumberOfCarsAvailable -= numberOfcarSold;
    countAvailableCars();
     printf("\nThere are %d number of cars available",totalNumberOfCarsAvailable);
 
@@ -594,30 +649,24 @@ void view_sales()
 
 
 
-//The main method 
-//Entry to the app
-void main()
-{
+
+void programLoop(){
 	
-	countAvailableCars();
-    getDataFromFile();
+	
+	char userChoice;
 
-    char userChoice;
-
-    do
+	  do
     {
 
        // clearScreen();
 
         menu_greetCustomer();
         menu_showMenu();
+		
+        userChoice = getCharFromConsole(_message,"Please Enter a valid alphabet input :");
+        _message = "Please enter a choice : ";
+        
 
-        userChoice = getCharFromConsole("Please Choose one : ");
-        if(!isalpha(userChoice)){
-	
-        userChoice = getCharFromConsole("Please Enter a valid alphabet input");
-        continue;
-    }
        // clearScreen();
 
         switch (userChoice)
@@ -643,13 +692,31 @@ void main()
 
             menu_exit();
             break;
-        }
+        
+        default : 
+       		_message = "Ensure the option is mapped to a menu\nEnter choice again : ";
+        	//programLoop();
+			break;
+		}
 
         pauseProgram(userChoice);
+  
 
-    } while (userChoice != MENU_OPTION_EXIT);
+    }
+	 while (userChoice != MENU_OPTION_EXIT);
 
-    clearScreen();
+}
+
+//The main method 
+//Entry to the app
+void main()
+{
+	
+	countAvailableCars();
+    getDataFromFile();
+
+    programLoop();
+   // clearScreen();
 
     printf("\n\nHave a  good day!\n\n");
 }
