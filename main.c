@@ -209,8 +209,11 @@ void main()
 
     case MENU_VIEW__CAR_SALES:
 
+      for (int i = 0; i < numberOfSales; i++)
+      {
 
-        
+        printf(" Sale Index : %d| Name of Car : %S | price : %f | Discount Given : %S | Customer Name : %S", i, *(nameOfCarPurchased), *(totalSales), *(discountGiven), *(customerNames));
+      }
 
       break;
 
