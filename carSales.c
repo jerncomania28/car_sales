@@ -44,6 +44,10 @@ unsigned short numberOfSales = 0;
 
 unsigned short totalNumberOfCarsAvailable;
 
+char *_message = "Please enter a Choice : ";
+
+bool data_changed = false;
+
 //  file codes
 
 #define FILE_OPENED 0
@@ -81,34 +85,68 @@ void pauseProgram(char userChoice)
     getchar();
 }
 
-char getCharFromConsole(char message[201])
+char getCharFromConsole(char message[201], char *altMessage)
 {
+ 
+ 	char userInput;
+ 		bool b = false;
+	while(true){
 
-    char userInput;
 
-    printf(message);
+    printf((b) ? altMessage : message);
 
     scanf("\n %c", &userInput);
+    if(isalpha(userInput)){
+    	break;
+	}
+	else{
+		b = true;
+	}
     
-
-    return userInput;
+	}
+    return tolower(userInput);
 }
+
+/* A function to check if a string is fully a number
+*/
+
+bool checker(char* str){
+	int length = sizeof(str) / sizeof(char);
+		
+		for(int i = 0; i<length; i++){
+			if(isdigit(str[i])){
+				return false;
+			}
+		}
+	return true;
+	}
+
 
 unsigned short getUnsignedShortFromConsole(char message[301])
 {
     unsigned short userInput;
-
     printf(message);
     scanf("%hd", &userInput);
-
     return userInput;
 }
 
-void getStringFromConsole(char message[201], char *str)
+void getStringFromConsole(char message[201], char *str, char *altMessage)
 {
-    printf(message);
+	bool b = false;
+	while(true){
 
+
+    char *f_message = ((b) ? altMessage : message);
+    printf("%s",f_message);
+	
     scanf("\n%[^\n]s", str);
+    if(!checker(str)){
+    	b = true;
+	}
+    else{
+    	break;
+	}
+}
 }
 
 // FILE FUNCTIONS
@@ -182,7 +220,7 @@ int find(char* str){
 
 void readDataFromFile()
 {
-    int counter = 0;
+    int counter = -1;
     
     //counts the quantity
     int quantity=0;
@@ -251,7 +289,8 @@ void getDataFromFile()
 // }
 
 void writeDataToFile()
-{
+{  
+
 	
     for (int i = 0; i < numberOfSales; i++)
     {
@@ -282,7 +321,7 @@ void writeDataToFile()
         strcat(line, data);
           strcat(line, ",");
 
-        sprintf(data, "%d", (float)discounts[i]);
+        sprintf(data, "%f", discounts[i]);
 
         // itoa( (int)quantityOrdered[i],data,10);
 
@@ -297,16 +336,19 @@ void writeDataToFile()
             fprintf(file, "\n");
         }
     }
+
 }
 
 void saveDataToFile()
 {
+	if(data_changed){
     openFile(CSV_FILE, "w");
 
     if (fileStatus == FILE_OPENED)
     {
         printf("\n\n can see save to Data function");
         writeDataToFile();
+        data_changed = false;
     }
     else if (fileStatus == FILE_ERROR)
     {
@@ -316,6 +358,8 @@ void saveDataToFile()
     }
 
     closeFile();
+    	}
+
 }
 
 // end of file functions.
@@ -458,13 +502,13 @@ void printDiscountOutcome(bool giveDiscount)
 void menu_buyCar()
 {
 
-    
+
 
     unsigned short numberOfCarsNeeded = 0, userAge = 0, carChoosen;
     bool giveDiscount = FALSE;
     float totalPrice = 0;
 
-    getStringFromConsole("What is your name ? Name :", &customerNames[numberOfSales]);
+    getStringFromConsole("What is your name ? Name :", &customerNames[numberOfSales],"Please enter a valid name without NUMBER : ");
 	menu_showAllCars();
     carChoosen = getUnsignedShortFromConsole("select the type of Car you want from the Displayed Table Above ? ");
 
@@ -521,6 +565,7 @@ void menu_buyCar()
     }
 
     numberOfSales++;
+    data_changed = true;
 }
 
 void menu_exit()
@@ -565,10 +610,10 @@ void view_sales()
 		}   
 		
 	
-	//	char *formatted_discount = (discounts[i] == 0.0) ? "No" : gcvt(discounts[i],5,formatted_discount);
+		//char *formatted_discount = (discounts[i] == 0.0) ? "No" : "";
 		
         // printSalesDataAtPosition(i);
-		printf("\n%s car model, sold for %f GBP at %f GBP per one for %hd quantity with %.2f discount \n to %s ",carModels[i], price,carPrices[i],  quantityOrdered[i],discounts[i],customerNames[i]);
+		printf("\n%s car model, sold for %f GBP at %f GBP per one for %hd quantity with %.2f Discount \n to %s ",carModels[i], price,carPrices[i],  quantityOrdered[i],discounts[i],customerNames[i]);
         totalSalesValue += price;
         numberOfcarSold += quantityOrdered[i];
     }
@@ -590,30 +635,23 @@ void countAvailableCars(){
 	 }
 }
 
-//The main method 
-//Entry to the app
-void main()
-{
+void programLoop(){
 	
-	countAvailableCars();
-    getDataFromFile();
+	
+	char userChoice;
 
-    char userChoice;
-
-    do
+	  do
     {
 
         clearScreen();
 
         menu_greetCustomer();
         menu_showMenu();
+		
+        userChoice = getCharFromConsole(_message,"Please Enter a valid alphabet input :");
+        _message = "Please enter a choice : ";
+        
 
-        userChoice = getCharFromConsole("Please Choose one : ");
-        if(!isalpha(userChoice)){
-	
-        userChoice = getCharFromConsole("Please Enter a valid alphabet input");
-        continue;
-    }
         clearScreen();
 
         switch (userChoice)
@@ -639,12 +677,30 @@ void main()
 
             menu_exit();
             break;
-        }
+        
+        default : 
+       		_message = "Ensure the option is mapped to a menu\nEnter choice again : ";
+        	programLoop();
+			break;
+		}
 
         pauseProgram(userChoice);
+  
 
-    } while (userChoice != MENU_OPTION_EXIT);
+    }
+	 while (userChoice != MENU_OPTION_EXIT);
 
+}
+
+//The main method 
+//Entry to the app
+void main()
+{
+	
+	countAvailableCars();
+    getDataFromFile();
+
+    programLoop();
     clearScreen();
 
     printf("\n\nHave a  good day!\n\n");
