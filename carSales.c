@@ -264,11 +264,10 @@ void writeDataToFile()
 
 void saveDataToFile()
 {
-    openFile(CSV_FILE, 'w');
+    openFile(CSV_FILE, "w");
 
     if (fileStatus == FILE_OPENED)
     {
-        printf("\n\n can see save to Data function");
         writeDataToFile();
     }
     else if (fileStatus == FILE_ERROR)
@@ -502,21 +501,21 @@ void printSalesDataAtPosition(int position)
 void view_sales()
 {
 
-    // sortArraysByQuantityAvailable(numberOfSales);
+    sortArraysByQuantityAvailable(numberOfSales);
 
     float totalSalesValue = 0;
     unsigned int numberOfcarSold = 0;
 
     printf("\nAll sales Data : \n\n");
 
-    printf("%d number of cars sold" , numberOfSales);
+    // printf("%d number of cars sold" , numberOfSales);
 
     for (int i = 0; i < numberOfSales; i++)
     {
 
         float price = carPrices[i] * quantityOrdered[i];
 
-        // printSalesDataAtPosition(i);
+        printSalesDataAtPosition(i);
 
         totalSalesValue += price;
         numberOfcarSold += quantityOrdered[i];
