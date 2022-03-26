@@ -1,3 +1,5 @@
+// import all important Libraries
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -6,6 +8,8 @@
 #include <ctype.h>
 
 extern int berrno;
+
+// General constants
 
 #define MAX_SALES 10
 #define CSV_FILE "./data.txt"
@@ -23,6 +27,7 @@ extern int berrno;
 #define SAVE 's'
 #define MENU_OPTION_EXIT 'x'
 
+// GLOBAL variables
 
 float carPrices[MAX_SALES];
 
@@ -48,7 +53,9 @@ char *_message = "Please enter a Choice : ";
 
 bool data_changed = false;
 
-//  file codes
+
+
+// FILE codes
 
 #define FILE_OPENED 0
 #define FILE_CLOSED 1
@@ -85,11 +92,14 @@ void pauseProgram(char userChoice)
     getchar();
 }
 
+// get Character from console 
 char getCharFromConsole(char message[201], char *altMessage)
 {
  
  	char userInput;
  		bool b = false;
+
+     // print altMessage everytime as far as UserInput != Alphabet
 	while(true){
 
 
@@ -97,6 +107,8 @@ char getCharFromConsole(char message[201], char *altMessage)
 
     scanf("\n %c", &userInput);
     if(isalpha(userInput)){
+
+        // break out of loop if UserInput == Alphabet.
     	break;
 	}
 	else{
@@ -104,6 +116,8 @@ char getCharFromConsole(char message[201], char *altMessage)
 	}
     
 	}
+
+    // return lowercase of Input
     return tolower(userInput);
 }
 
