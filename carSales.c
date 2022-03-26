@@ -290,12 +290,8 @@ void getDataFromFile()
 // }
 
 void writeDataToFile()
-// <<<<<<< HEAD
-{
-=======
-{
->>>>>>> update
 
+{
 	
     for (int i = 0; i < numberOfSales; i++)
     { 
@@ -326,23 +322,17 @@ void writeDataToFile()
         // itoa( (int)quantityOrdered[i],data,10);
 
         strcat(line, data);
-<<<<<<< HEAD
-<<<<<<< HEAD
         //   strcat(line, ",");
 
         // sprintf(data, "%f", discounts[i]);
 
         // itoa( (int)quantityOrdered[i],data,10);
-=======
         strcat(line, ",");
         
  		sprintf(data, "%d", discounts[i] * 100);
->>>>>>> ab02932cda52e2ebbf1b321d7b188401965c0d60
-=======
         strcat(line, ",");
         
  		sprintf(data, "%d", discounts[i] * 100);
->>>>>>> update
 
         strcat(line, data);
         
@@ -355,15 +345,7 @@ void writeDataToFile()
             fprintf(file, "\n");
         }
     }
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
-    
->>>>>>> ab02932cda52e2ebbf1b321d7b188401965c0d60
-=======
-    
->>>>>>> update
 }
 
 void saveDataToFile()
@@ -534,15 +516,9 @@ void menu_buyCar()
     bool giveDiscount = FALSE;
     float totalPrice = 0;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-    // getStringFromConsole("What is your name ? Name :", &customerNames[numberOfSales],"Please enter a valid name without NUMBER : ");
-=======
-    getStringFromConsole("What is your name ? Name :", customerNames[numberOfSales]);
->>>>>>> ab02932cda52e2ebbf1b321d7b188401965c0d60
-=======
-    getStringFromConsole("What is your name ? Name :", customerNames[numberOfSales]);
->>>>>>> update
+    getStringFromConsole("What is your name ? Name :", &customerNames[numberOfSales],"Please enter a valid name without NUMBER : ");
+    // getStringFromConsole("What is your name ? Name :", customerNames[numberOfSales]);
+    // getStringFromConsole("What is your name ? Name :", customerNames[numberOfSales]);
 	menu_showAllCars();
     carChoosen = getUnsignedShortFromConsole("select the type of Car you want from the Displayed Table Above ? ");
 
@@ -598,17 +574,10 @@ void menu_buyCar()
     {
         printf("Sorry ,The selected Number isn't listed in The Display. \n\n");
     }
-
-<<<<<<< HEAD
-<<<<<<< HEAD
     // numberOfSales++;
     // data_changed = true;
-=======
    
->>>>>>> ab02932cda52e2ebbf1b321d7b188401965c0d60
-=======
    
->>>>>>> update
 }
 
 void menu_exit()
@@ -664,15 +633,9 @@ void view_sales()
 		//char *formatted_discount = (discounts[i] == 0.0) ? "No" : "";
 		
         // printSalesDataAtPosition(i);
-<<<<<<< HEAD
-<<<<<<< HEAD
 		// printf("\n%s car model, sold for %f GBP at %f GBP per one for %hd quantity with %.2f Discount \n to %s ",carModels[i], price,carPrices[i],  quantityOrdered[i],discounts[i],customerNames[i]);
-=======
 		printf("\n\n%s car model, sold for %f GBP at %f GBP per one for %hd quantity with %.2f discount to %s ",carModels[i], price,carPrices[i],  quantityOrdered[i],discounts[i],customerNames[i]);
->>>>>>> ab02932cda52e2ebbf1b321d7b188401965c0d60
-=======
 		printf("\n\n%s car model, sold for %f GBP at %f GBP per one for %hd quantity with %.2f discount to %s ",carModels[i], price,carPrices[i],  quantityOrdered[i],discounts[i],customerNames[i]);
->>>>>>> update
         totalSalesValue += price;
         numberOfcarSold += quantityOrdered[i];
     }
@@ -702,25 +665,14 @@ void programLoop(){
         userChoice = getCharFromConsole(_message,"Please Enter a valid alphabet input :");
         _message = "Please enter a choice : ";
         
-
-<<<<<<< HEAD
-<<<<<<< HEAD
         // clearScreen();
-=======
-=======
->>>>>>> update
-        userChoice = getCharFromConsole("Please Choose one : ");
+        // userChoice = getCharFromConsole("Please Choose one : ");
         if(!isalpha(userChoice)){
 	
-        userChoice = getCharFromConsole("Please Enter a valid alphabet input");
+        // userChoice = getCharFromConsole("Please Enter a valid alphabet input");
         continue;
     }
-       // clearScreen();
-<<<<<<< HEAD
->>>>>>> ab02932cda52e2ebbf1b321d7b188401965c0d60
-=======
->>>>>>> update
-
+       clearScreen();
         switch (userChoice)
         {
         case BUY_CAR:
