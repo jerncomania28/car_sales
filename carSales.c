@@ -291,10 +291,14 @@ void getDataFromFile()
 
 void writeDataToFile()
 <<<<<<< HEAD
+<<<<<<< HEAD
 {  
 =======
 {
 >>>>>>> ab02932cda52e2ebbf1b321d7b188401965c0d60
+=======
+{
+>>>>>>> update
 
 	
     for (int i = 0; i < numberOfSales; i++)
@@ -327,9 +331,10 @@ void writeDataToFile()
 
         strcat(line, data);
 <<<<<<< HEAD
-          strcat(line, ",");
+<<<<<<< HEAD
+        //   strcat(line, ",");
 
-        sprintf(data, "%f", discounts[i]);
+        // sprintf(data, "%f", discounts[i]);
 
         // itoa( (int)quantityOrdered[i],data,10);
 =======
@@ -337,6 +342,11 @@ void writeDataToFile()
         
  		sprintf(data, "%d", discounts[i] * 100);
 >>>>>>> ab02932cda52e2ebbf1b321d7b188401965c0d60
+=======
+        strcat(line, ",");
+        
+ 		sprintf(data, "%d", discounts[i] * 100);
+>>>>>>> update
 
         strcat(line, data);
         
@@ -350,10 +360,14 @@ void writeDataToFile()
         }
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
     
 >>>>>>> ab02932cda52e2ebbf1b321d7b188401965c0d60
+=======
+    
+>>>>>>> update
 }
 
 void saveDataToFile()
@@ -525,10 +539,14 @@ void menu_buyCar()
     float totalPrice = 0;
 
 <<<<<<< HEAD
-    getStringFromConsole("What is your name ? Name :", &customerNames[numberOfSales],"Please enter a valid name without NUMBER : ");
+<<<<<<< HEAD
+    // getStringFromConsole("What is your name ? Name :", &customerNames[numberOfSales],"Please enter a valid name without NUMBER : ");
 =======
     getStringFromConsole("What is your name ? Name :", customerNames[numberOfSales]);
 >>>>>>> ab02932cda52e2ebbf1b321d7b188401965c0d60
+=======
+    getStringFromConsole("What is your name ? Name :", customerNames[numberOfSales]);
+>>>>>>> update
 	menu_showAllCars();
     carChoosen = getUnsignedShortFromConsole("select the type of Car you want from the Displayed Table Above ? ");
 
@@ -586,11 +604,15 @@ void menu_buyCar()
     }
 
 <<<<<<< HEAD
-    numberOfSales++;
-    data_changed = true;
+<<<<<<< HEAD
+    // numberOfSales++;
+    // data_changed = true;
 =======
    
 >>>>>>> ab02932cda52e2ebbf1b321d7b188401965c0d60
+=======
+   
+>>>>>>> update
 }
 
 void menu_exit()
@@ -647,10 +669,14 @@ void view_sales()
 		
         // printSalesDataAtPosition(i);
 <<<<<<< HEAD
-		printf("\n%s car model, sold for %f GBP at %f GBP per one for %hd quantity with %.2f Discount \n to %s ",carModels[i], price,carPrices[i],  quantityOrdered[i],discounts[i],customerNames[i]);
+<<<<<<< HEAD
+		// printf("\n%s car model, sold for %f GBP at %f GBP per one for %hd quantity with %.2f Discount \n to %s ",carModels[i], price,carPrices[i],  quantityOrdered[i],discounts[i],customerNames[i]);
 =======
 		printf("\n\n%s car model, sold for %f GBP at %f GBP per one for %hd quantity with %.2f discount to %s ",carModels[i], price,carPrices[i],  quantityOrdered[i],discounts[i],customerNames[i]);
 >>>>>>> ab02932cda52e2ebbf1b321d7b188401965c0d60
+=======
+		printf("\n\n%s car model, sold for %f GBP at %f GBP per one for %hd quantity with %.2f discount to %s ",carModels[i], price,carPrices[i],  quantityOrdered[i],discounts[i],customerNames[i]);
+>>>>>>> update
         totalSalesValue += price;
         numberOfcarSold += quantityOrdered[i];
     }
@@ -682,8 +708,11 @@ void programLoop(){
         
 
 <<<<<<< HEAD
-        clearScreen();
+<<<<<<< HEAD
+        // clearScreen();
 =======
+=======
+>>>>>>> update
         userChoice = getCharFromConsole("Please Choose one : ");
         if(!isalpha(userChoice)){
 	
@@ -691,7 +720,10 @@ void programLoop(){
         continue;
     }
        // clearScreen();
+<<<<<<< HEAD
 >>>>>>> ab02932cda52e2ebbf1b321d7b188401965c0d60
+=======
+>>>>>>> update
 
         switch (userChoice)
         {
