@@ -290,12 +290,8 @@ void getDataFromFile()
 // }
 
 void writeDataToFile()
-<<<<<<< HEAD
-<<<<<<< HEAD
-{  
-=======
+// <<<<<<< HEAD
 {
->>>>>>> ab02932cda52e2ebbf1b321d7b188401965c0d60
 =======
 {
 >>>>>>> update
